@@ -18,29 +18,29 @@ public class Main : Node
 	{
 		score = 0;
 		
-		Node2D player = (Node2D)GetNode("Player");
+		Player player = (Player)GetNode("Player");
 		Node2D startPosition = (Node2D)GetNode("StartPosition");
 		player.Start(startPosition.Position);
 		
-		Node2D startTimer = (Node2D)GetNode("StartTimer");
+		Timer startTimer = (Timer)GetNode("StartTimer");
 		startTime.Start();
 	}
 	
 	private void GameOver()
 	{
-	    Node2D scoreTimer = (Node2D)GetNode("ScoreTimer");
+	    Timer scoreTimer = (Timer)GetNode("ScoreTimer");
 		scoreTimer.Stop();
-		Node2D mobTimer = (Node2D)GetNode("MobTimer");
+		Timer mobTimer = (Timer)GetNode("MobTimer");
 		mobTimer.Stop();
 		
 	}
 	
 	private void _OnStartTimerTimeout()
 	{
-		Node2D mobTimer = (Node2D)GetNode("MobTimer");
+		Timer mobTimer = (Timer)GetNode("MobTimer");
 		mobTimer.Start();
 		
-		Node2D scoreTimer = (Node2D)GetNode("ScoreTimer");
+		Timer scoreTimer = (Timer)GetNode("ScoreTimer");
 		scoreTimer.Start();
 	}
 	
@@ -51,18 +51,19 @@ public class Main : Node
 	
 	private void _OnMobTimerTimeout()
 	{
-		Node2D mobPath = (Node2D)GetNode("MobPath");
-	    Node2D mobSpawnLocation = (Node2D)GetNode("MobPath/MobSpawnLocation");
+		Path2D mobPath = (Path2D)GetNode("MobPath");
+	    PathFollow2D mobSpawnLocation = (PathFollow2D)GetNode("MobPath/MobSpawnLocation");
 		mobSpawnLocation.SetOffset(new Random().NextInt());
 		
 		Node2D mob = Mob.Instance();
 		AddChild(mob);
 		
-		
 		float direction = mobSpawnLocation.Rotation;
 		mob.Position = mobSpawnLocation.Position;
-		
-		direction += (float)GetRandomNumber();
+		direction += (float)GetRandomNumber(-1 * Mathf.PI/4, Mathf.PI/4);
+		mob.Rotation = direction;
+		mob.SetLinearVelocity(new Vector2(new Random.NextRange(
+			mob.MinSpeed, mob.MaxSpeed), 0).Rotated(direction));
 	}
 	
 	private double GetRandomNumber(double minimum, double maximum)

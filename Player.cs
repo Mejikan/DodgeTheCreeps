@@ -76,7 +76,7 @@ public class Player : Area2D
 		CallDeferred("set_monitoring", false);
 	}
 	
-	private void Start(Vector2 position)
+	public void Start(Vector2 position)
 	{
 		Position = position;
 		Show();
