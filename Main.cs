@@ -28,6 +28,9 @@ public class Main : Node
 		HUD hud = GetNode("HUD") as HUD;
 		hud.ShowMessage("Get Ready");
 		hud.UpdateScore(score);
+		
+		AudioStreamPlayer music = GetNode("Music") as AudioStreamPlayer;
+		music.Play();
 	}
 	
 	private void GameOver()
@@ -39,6 +42,12 @@ public class Main : Node
 		
 		HUD hud = GetNode("HUD") as HUD;
 		hud.GameOver();
+		
+		AudioStreamPlayer deathSound = GetNode("DeathSound") as AudioStreamPlayer;
+		deathSound.Play();
+		
+		AudioStreamPlayer music = GetNode("Music") as AudioStreamPlayer;
+		music.Stop();
 	}
 	
 	private void _OnStartTimerTimeout()
